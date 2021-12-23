@@ -28,18 +28,20 @@ def prep(example, tokenizer):
 
 
 def main():
-    dataset = load_dataset('text', data_files='modu-spoken-tokenized.txt')['train']
-    tokenizer = AutoTokenizer.from_pretrained('klue/bert-base')
-    dataset = dataset.map(lambda x: prep(x, tokenizer))
-    dataset.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids'])
+    dataset = load_dataset('text', data_files='modu-spoken.txt')['train']
+    print(dataset)
+    # dataset = load_dataset('text', data_files='modu-spoken-tokenized.txt')['train']
+    # tokenizer = AutoTokenizer.from_pretrained('klue/bert-base')
+    # dataset = dataset.map(lambda x: prep(x, tokenizer))
+    # dataset.set_format('torch', columns=['input_ids', 'attention_mask', 'token_type_ids'])
     
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=16, shuffle=True)
-    batch = next(iter(dataloader))
-    print(batch['input_ids'].size(), batch['attention_mask'].size(), batch['token_type_ids'].size())
-    print(batch['token_type_ids'].sum())
-    for i in range(16):
-        print(batch['token_type_ids'][i])
-        print('=' * 100)
+    # dataloader = torch.utils.data.DataLoader(dataset, batch_size=16, shuffle=True)
+    # batch = next(iter(dataloader))
+    # print(batch['input_ids'].size(), batch['attention_mask'].size(), batch['token_type_ids'].size())
+    # print(batch['token_type_ids'].sum())
+    # for i in range(16):
+    #     print(batch['token_type_ids'][i])
+    #     print('=' * 100)
 
 
 if __name__ == '__main__':

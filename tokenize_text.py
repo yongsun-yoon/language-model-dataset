@@ -3,9 +3,10 @@ from transformers import AutoTokenizer
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_file', type=str, default='modu-spoken.txt')
-parser.add_argument('--model_name_or_path', type=str, default='klue/bert-base')
+parser.add_argument('--input_file', type=str)
+parser.add_argument('--model_name_or_path', type=str)
 parser.add_argument('--max_seq_length', type=int, default=512)
+parser.add_argument('--add_sep', default=False, action='store_true')
 args = parser.parse_args()
 
 
@@ -22,9 +23,10 @@ def main(args):
     for doc in tqdm(input_fs):
         tokens = tokenizer.tokenize(doc)
         buffer += tokens
-        buffer += [tokenizer.sep_token]
+        if args.add_sep:
+            buffer += [tokenizer.sep_token]
 
-        if len(buffer) > seq_length:
+        while len(buffer) > seq_length:
             text = ' '.join(buffer[:seq_length])
             output_fs.write(text)
             output_fs.write('\n')
