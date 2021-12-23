@@ -12,9 +12,10 @@ args = parser.parse_args()
 
 def main(args):
     seq_length = args.max_seq_length - 2 # room for [CLS], [SEP]
-
     input_fs = open(args.input_file, 'r')
-    output_file = args.input_file.split('.txt')[0] + '-tokenized.txt'
+
+    model_name = args.model_name_or_path.replace('/', '-')
+    output_file = args.input_file.split('.txt')[0] + f'_tokenized_{model_name}_{args.max_seq_length}.txt'
     output_fs = open(output_file, 'a')
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
