@@ -1,3 +1,4 @@
+import os
 from tqdm import tqdm
 from transformers import AutoTokenizer
 
@@ -9,6 +10,11 @@ parser.add_argument('--max_seq_length', type=int, default=512)
 parser.add_argument('--add_sep', default=False, action='store_true')
 args = parser.parse_args()
 
+
+def get_num_lines(fname):
+    res = os.popen(f'wc -l {fname}').read()
+    lines = res.strip().split()[0]
+    return int(lines)
 
 def main(args):
     seq_length = args.max_seq_length - 2 # room for [CLS], [SEP]
