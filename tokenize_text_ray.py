@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--input_file', type=str, default='modu-spoken.txt')
 parser.add_argument('--model_name_or_path', type=str, default='klue/bert-base')
 parser.add_argument('--max_seq_length', type=int, default=512)
+parser.add_argument('--split_lines', type=int, default=1000)
 parser.add_argument('--add_sep', default=False, action='store_true')
 args = parser.parse_args()
 
@@ -23,9 +24,9 @@ def get_num_lines(fname):
     lines = res.strip().split()[0]
     return int(lines)
 
-def split(input_file):
+def split(input_file, split_lines):
     os.makedirs('temp')
-    cmd = f'split -l 1000 {input_file} temp/'
+    cmd = f'split -l {split_lines} {input_file} temp/'
     os.system(cmd)
 
 def clean():
@@ -55,14 +56,15 @@ def process(text_file, output_file, seq_length, add_sep=False):
 
 
 def main(args):
-    split(args.input_file)
+    split(args.input_file, args.split_lines)
     files = glob('temp/*')
     
     model_name = args.model_name_or_path.replace('/', '-')
     output_file = args.input_file.split('.txt')[0] + f'_tokenized_{model_name}_{args.max_seq_length}.txt'
+    seq_length = args.max_seq_length - 2
 
     ray.init()
-    ray.get([process.remote(f, output_file, args.max_seq_length) for f in files])
+    ray.get([process.remote(f, output_file, seq_length) for f in files])
     ray.shutdown()
 
     clean()
