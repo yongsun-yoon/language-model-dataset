@@ -1,2 +1,3 @@
 datasets
+wikiextractor
 namu-wiki-extractor
