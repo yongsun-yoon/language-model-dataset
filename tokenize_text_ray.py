@@ -9,10 +9,10 @@ from transformers import AutoTokenizer
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_file', type=str, default='modu-spoken.txt')
-parser.add_argument('--model_name_or_path', type=str, default='klue/bert-base')
+parser.add_argument('--input_file', type=str, default='enwiki.txt')
+parser.add_argument('--model_name_or_path', type=str, default='roberta-base')
 parser.add_argument('--max_seq_length', type=int, default=512)
-parser.add_argument('--split_lines', type=int, default=1000)
+parser.add_argument('--split_lines', type=int, default=10000)
 parser.add_argument('--add_sep', default=False, action='store_true')
 args = parser.parse_args()
 
