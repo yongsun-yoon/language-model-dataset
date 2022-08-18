@@ -6,3 +6,5 @@ __pycache__
 temp
 *.lock
 !requirements.txt
+reddit
+nohup.out
